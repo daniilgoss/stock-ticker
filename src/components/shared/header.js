@@ -10,7 +10,7 @@ const Header = (props) => {
         <ul className='navbar-nav mr-auto-right' alt='fireSpot'>
           <ul className='navbar-nav mr-auto'>
             <li className='nav-item active'>
-              <img src={require('../stock.png')} width='145' alt='' />
+              <img src={require('../../stock.png')} width='145' alt='' />
             </li>
           </ul>
         </ul>

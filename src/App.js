@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import Ticker from './components/ticker';
+import SingleQuote from './components/single-quote';
 
 function App() {
   return (
     <div className='App-header'>
-      <Ticker />
+      <SingleQuote />
     </div>
   );
 }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { url as ALPHA_VANTAGE_URL } from '../utils/url';
-import Header from './header';
+import Header from './shared/header';
 
-export default class Ticker extends Component {
+export default class SingleQuote extends Component {
   constructor(props) {
     super(props);
 
