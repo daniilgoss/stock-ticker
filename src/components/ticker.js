@@ -10,6 +10,7 @@ export default class Ticker extends Component {
       ticker: {},
       value: '',
       isLoaded: false,
+      error: false,
     };
 
     this.getSingleQuote = this.getSingleQuote.bind(this);
@@ -26,16 +27,33 @@ export default class Ticker extends Component {
         return response.json();
       })
       .then((parsedJson) => {
-        this.setState({
-          ticker: parsedJson,
-          isLoaded: true,
-        });
+        if (JSON.stringify(parsedJson) === '{"Global Quote":{}}')
+          this.setState({
+            error: true,
+            ticker: { invalidValue: this.state.value },
+          });
+        else {
+          this.setState({
+            ticker: parsedJson,
+            isLoaded: true,
+            error: false,
+          });
+        }
       });
-    event.preventDefault();
+    event.preventDefault(); // prevents a refresh from occuring when onSubmit gets fired
   }
 
   handleChange(event) {
     this.setState({ value: event.target.value });
+  }
+
+  renderInvalidSelection() {
+    return (
+      <h5>
+        "{this.state.ticker.invalidValue}" is not a valid selection. Please
+        enter a valid ticker and try again
+      </h5>
+    );
   }
 
   tickerExists() {
@@ -69,7 +87,7 @@ export default class Ticker extends Component {
             ></input>
           </label>
         </form>
-        {this.renderTicker()}
+        {this.state.error ? this.renderInvalidSelection() : this.renderTicker()}
       </div>
     );
   }

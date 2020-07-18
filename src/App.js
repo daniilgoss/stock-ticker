@@ -4,7 +4,7 @@ import Ticker from './components/ticker';
 
 function App() {
   return (
-    <div class='App-header'>
+    <div className='App-header'>
       <Ticker />
     </div>
   );
