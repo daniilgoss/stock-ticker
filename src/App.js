@@ -3,7 +3,11 @@ import './App.css';
 import Ticker from './components/ticker';
 
 function App() {
-  return <Ticker />;
+  return (
+    <div class='App-header'>
+      <Ticker />
+    </div>
+  );
 }
 
 export default App;

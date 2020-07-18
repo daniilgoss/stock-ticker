@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { url as ALPHA_VANTAGE_URL } from '../utils/url';
+import Header from './header';
 
 export default class Ticker extends Component {
   constructor(props) {
@@ -54,6 +55,7 @@ export default class Ticker extends Component {
   render() {
     return (
       <div>
+        <Header />
         <form onSubmit={this.getSingleQuote}>
           <label>
             Generate a Quote
