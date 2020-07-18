@@ -7,78 +7,67 @@ export default class Ticker extends Component {
 
     this.state = {
       ticker: {},
-      currentValue: [],
-      symbol: 'SCHB',
-      key: '',
+      value: '',
       isLoaded: false,
-      error: null,
     };
 
     this.getSingleQuote = this.getSingleQuote.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   fetchQuote(symbol) {
     return `${ALPHA_VANTAGE_URL}${symbol}&apikey=${process.env.REACT_APP_API_KEY}`;
   }
 
-  getSingleQuote() {
-    fetch(this.fetchQuote('IBM'))
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          let formattedResult = JSON.parse(
-            JSON.stringify(Object.values(result)[0])
-          );
+  getSingleQuote(event) {
+    fetch(this.fetchQuote(this.state.value))
+      .then((response) => {
+        return response.json();
+      })
+      .then((parsedJson) => {
+        this.setState({
+          ticker: parsedJson,
+          isLoaded: true,
+        });
+      });
+    event.preventDefault();
+  }
 
-          Object.entries(formattedResult).forEach((key, value) =>
-            this.setState({
-              currentValue: { key },
-              ticker: formattedResult,
-              isLoaded: true,
-            })
-          );
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error,
-          });
-        }
-      );
+  handleChange(event) {
+    this.setState({ value: event.target.value });
   }
 
   tickerExists() {
-    return this.isLoaded;
+    return this.state.isLoaded;
   }
 
   renderTicker() {
     return (
       <h3>
-        {this.tickerExists
-          ? Object.values(this.state.currentValue)
+        {this.tickerExists()
+          ? JSON.stringify(this.state.ticker)
           : 'No Ticker Selected'}
       </h3>
     );
   }
 
-  renderInput() {
-    return (
-      <div>
-        <input placeholder='Enter Symbol'></input>
-      </div>
-    );
-  }
-
-  onSubmit() {}
-
   render() {
     return (
       <div>
-        {this.renderInput()}
-        <br></br>
-        <button onClick={this.getSingleQuote}>Enter</button>
-        <div>{this.renderTicker()}</div>
+        <form onSubmit={this.getSingleQuote}>
+          <label>
+            Generate a Quote
+            <br></br>
+            <br></br>
+            <input
+              placeholder='Enter Symbol'
+              type='text'
+              value={this.state.value}
+              onChange={this.handleChange}
+            ></input>
+          </label>
+        </form>
+        {this.renderTicker()}
       </div>
     );
   }
