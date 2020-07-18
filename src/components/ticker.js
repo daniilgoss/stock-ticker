@@ -17,6 +17,24 @@ export default class Ticker extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  format(json) {
+    let buffer = [];
+
+    Object.keys(json).forEach((key) => {
+      buffer.push(json[key]);
+    });
+
+    buffer.map((item) => {
+      Object.keys(item).map((key) => {
+        const newProp = key.split(' ')[1];
+        item[newProp] = item[key];
+        delete item[key];
+      });
+    });
+
+    return buffer[0];
+  }
+
   fetchQuote(symbol) {
     return `${ALPHA_VANTAGE_URL}${symbol}&apikey=${process.env.REACT_APP_API_KEY}`;
   }
@@ -34,13 +52,13 @@ export default class Ticker extends Component {
           });
         else {
           this.setState({
-            ticker: parsedJson,
+            ticker: { validValue: this.format(parsedJson) },
             isLoaded: true,
             error: false,
           });
         }
       });
-    event.preventDefault(); // prevents a refresh from occuring when onSubmit gets fired
+    event.preventDefault();
   }
 
   handleChange(event) {
@@ -62,11 +80,11 @@ export default class Ticker extends Component {
 
   renderTicker() {
     return (
-      <h3>
+      <h6>
         {this.tickerExists()
-          ? JSON.stringify(this.state.ticker)
+          ? JSON.stringify(Object.entries(this.state.ticker.validValue))
           : 'No Ticker Selected'}
-      </h3>
+      </h6>
     );
   }
 
