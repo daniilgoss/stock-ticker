@@ -1,44 +1,54 @@
 import React from 'react';
 
 export default class Table extends React.Component {
-  getKeys = function () {
-    return Object.keys(this.props.data[0]);
-  };
-
-  getHeader = function () {
-    var keys = this.getKeys();
-    return keys.map((key, index) => {
-      return <th key={key}>{key.toUpperCase()}</th>;
-    });
-  };
-
-  getRowsData = function () {
-    var items = this.props.data;
-    var keys = this.getKeys();
-    return items.map((row, index) => {
+  renderTableData = () => {
+    return this.props.value.map((attrs) => {
+      const {
+        symbol,
+        open,
+        high,
+        low,
+        price,
+        volume,
+        latest,
+        previous,
+        change,
+      } = attrs;
       return (
-        <tr key={index}>
-          <RenderRow key={index} data={row} keys={keys} />
+        <tr key={symbol}>
+          <td>{symbol}</td>
+          <td>{open}</td>
+          <td>{high}</td>
+          <td>{low}</td>
+          <td>{price}</td>
+          <td>{volume}</td>
+          <td>{latest}</td>
+          <td>{previous}</td>
+          <td>{change}</td>
         </tr>
       );
     });
   };
 
+  renderTableHeader = () => {
+    let header = Object.keys(this.props.value[0]);
+    return header.map((key, index) => {
+      return <th key={index}>{key.toUpperCase()}</th>;
+    });
+  };
+
   render() {
+    console.log(this.props.value);
     return (
       <div>
-        <table>
-          <thead>
-            <tr>{this.getHeader()}</tr>
-          </thead>
-          <tbody>{this.getRowsData()}</tbody>
+        <h1 id='title'>{this.props.value[0]['symbol']}</h1>
+        <table id='students'>
+          <tbody>
+            <tr>{this.renderTableHeader()}</tr>
+            {this.renderTableData()}
+          </tbody>
         </table>
       </div>
     );
   }
 }
-const RenderRow = (props) => {
-  return props.keys.map((key, index) => {
-    return <td key={props.data[key]}>{props.data[key]}</td>;
-  });
-};
