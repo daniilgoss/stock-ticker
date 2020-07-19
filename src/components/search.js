@@ -5,7 +5,7 @@ import format from '../utils/formatters';
 import '../table.css';
 import '../single-quote.css';
 
-export default class SingleQuote extends Component {
+export default class Search extends Component {
   constructor(props) {
     super(props);
 
@@ -17,36 +17,35 @@ export default class SingleQuote extends Component {
     };
   }
 
-  //   search = () => {
-  //     fetch(searchQuote(this.state.value)).then((response) => {
-  //       return response.json();
-  //     });
-  //   };
-
-  //   getSingleQuote = (event) => {
-  //     fetch(singleQuote(this.state.value))
-  //       .then((response) => {
-  //         return response.json();
-  //       })
-  //       .then((parsedJson) => {
-  //         if (JSON.stringify(parsedJson) === '{"Global Quote":{}}')
-  //           this.setState({
-  //             error: true,
-  //             ticker: { invalidValue: this.state.value },
-  //           });
-  //         else {
-  //           this.setState({
-  //             ticker: { validValue: format(parsedJson) },
-  //             isLoaded: true,
-  //             error: false,
-  //           });
-  //         }
-  //       });
-  //     event.preventDefault();
-  //   };
+  search = (event) => {
+    console.log(this.state.value);
+    fetch(searchQuote(this.state.value))
+      .then((response) => {
+        return response.json();
+      })
+      .then((parsedJson) => {
+        console.log(4, Object.keys(parsedJson)[0]);
+        if (Object.keys(parsedJson)[0] === 'Error Message')
+          this.setState({
+            ticker: { invalidValue: this.state.value },
+            // error: true,
+            // isLoaded: false,
+          });
+        else {
+          console.log(1, parsedJson);
+          this.setState({
+            ticker: parsedJson,
+            // error: false,
+            isLoaded: true,
+          });
+        }
+      });
+    event.preventDefault();
+  };
 
   handleChange = (event) => {
     this.setState({ value: event.target.value });
+    this.search(event);
   };
 
   tickerExists = () => {
@@ -65,22 +64,22 @@ export default class SingleQuote extends Component {
   renderTicker = () => {
     return (
       <h6>
-        {this.tickerExists() ? (
-          <Table value={this.state.ticker.validValue} />
-        ) : (
-          'No Ticker Selected'
-        )}
+        {this.tickerExists()
+          ? JSON.stringify(this.state.ticker)
+          : this.state.value}
       </h6>
     );
   };
 
   render() {
+    console.log(this.state.value);
     return (
       <div id='quote'>
         {/* <Header /> */}
-        <form onSubmit={this.getSingleQuote}>
+        {/* <form onSubmit={this.search}> */}
+        <form>
           <label>
-            <h2>Generate a Quote</h2>
+            <h2>Search for a Quote</h2>
             <input
               placeholder='Enter Symbol'
               type='text'
@@ -89,7 +88,9 @@ export default class SingleQuote extends Component {
             ></input>
           </label>
         </form>
-        {this.state.error ? this.renderInvalidSelection() : this.renderTicker()}
+        {this.state.ticker.invalidValue
+          ? this.renderInvalidSelection()
+          : this.renderTicker()}
       </div>
     );
   }

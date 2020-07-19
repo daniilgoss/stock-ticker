@@ -1,4 +1,4 @@
-const format = (json) => {
+export const formatSingleQuote = (json) => {
   let buffer = [];
 
   Object.keys(json).forEach((key) => {
@@ -16,4 +16,6 @@ const format = (json) => {
   return buffer;
 };
 
-export default format;
+export const formatTimeSeries = (json) => {};
+
+// export default formatSingleQuote;

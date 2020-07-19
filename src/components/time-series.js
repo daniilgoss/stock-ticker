@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Table from './shared/table';
-import { dailyQuote } from '../utils/end-points';
-import format from '../utils/formatters';
-import '../table.css';
+import { timeSeriesQuote } from '../utils/end-points';
+import { formatTimeSeries } from '../utils/formatters';
+// import '../table.css';
 import '../single-quote.css';
 
-export default class SingleQuote extends Component {
+export default class TimeSeries extends Component {
   constructor(props) {
     super(props);
 
@@ -17,29 +17,29 @@ export default class SingleQuote extends Component {
     };
   }
 
-  getDailyAdjustedQuote = () => {};
-
-  //   getSingleQuote = (event) => {
-  //     fetch(singleQuote(this.state.value))
-  //       .then((response) => {
-  //         return response.json();
-  //       })
-  //       .then((parsedJson) => {
-  //         if (JSON.stringify(parsedJson) === '{"Global Quote":{}}')
-  //           this.setState({
-  //             error: true,
-  //             ticker: { invalidValue: this.state.value },
-  //           });
-  //         else {
-  //           this.setState({
-  //             ticker: { validValue: format(parsedJson) },
-  //             isLoaded: true,
-  //             error: false,
-  //           });
-  //         }
-  //       });
-  //     event.preventDefault();
-  //   };
+  getQuote = (event) => {
+    fetch(timeSeriesQuote(this.state.value, 'full'))
+      .then((response) => {
+        return response.json();
+      })
+      .then((parsedJson) => {
+        console.log(1, parsedJson);
+        if (JSON.stringify(parsedJson) === '{"Global Quote":{}}')
+          this.setState({
+            error: true,
+            ticker: { invalidValue: this.state.value },
+          });
+        else {
+          this.setState({
+            // ticker: { validValue: format(parsedJson) },
+            ticker: parsedJson,
+            isLoaded: true,
+            error: false,
+          });
+        }
+      });
+    event.preventDefault();
+  };
 
   handleChange = (event) => {
     this.setState({ value: event.target.value });
@@ -61,11 +61,9 @@ export default class SingleQuote extends Component {
   renderTicker = () => {
     return (
       <h6>
-        {this.tickerExists() ? (
-          <Table value={this.state.ticker.validValue} />
-        ) : (
-          'No Ticker Selected'
-        )}
+        {this.tickerExists()
+          ? JSON.stringify(this.state.ticker)
+          : 'No Ticker Selected'}
       </h6>
     );
   };
@@ -73,8 +71,7 @@ export default class SingleQuote extends Component {
   render() {
     return (
       <div id='quote'>
-        {/* <Header /> */}
-        <form onSubmit={this.getSingleQuote}>
+        <form onSubmit={this.getQuote}>
           <label>
             <h2>Generate a Quote</h2>
             <input
