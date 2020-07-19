@@ -38,7 +38,6 @@ export default class Table extends React.Component {
   };
 
   render() {
-    console.log(this.props.value);
     return (
       <div>
         <h1 id='title'>{this.props.value[0]['symbol']}</h1>
