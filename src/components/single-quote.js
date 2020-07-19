@@ -75,9 +75,7 @@ export default class SingleQuote extends Component {
         {/* <Header /> */}
         <form onSubmit={this.getSingleQuote}>
           <label>
-            Generate a Quote
-            <br></br>
-            <br></br>
+            <h2>Generate a Quote</h2>
             <input
               placeholder='Enter Symbol'
               type='text'
