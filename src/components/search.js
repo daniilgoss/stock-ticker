@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Table from './shared/table';
-import { dailyQuote } from '../utils/end-points';
+import { searchQuote } from '../utils/end-points';
 import format from '../utils/formatters';
 import '../table.css';
 import '../single-quote.css';
@@ -17,7 +17,11 @@ export default class SingleQuote extends Component {
     };
   }
 
-  getDailyAdjustedQuote = () => {};
+  //   search = () => {
+  //     fetch(searchQuote(this.state.value)).then((response) => {
+  //       return response.json();
+  //     });
+  //   };
 
   //   getSingleQuote = (event) => {
   //     fetch(singleQuote(this.state.value))

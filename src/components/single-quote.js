@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Table from './shared/table';
-import singleQuote from '../utils/url';
+import { singleQuote } from '../utils/end-points';
 import format from '../utils/formatters';
 import '../table.css';
 import '../single-quote.css';
