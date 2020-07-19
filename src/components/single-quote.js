@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { url as ALPHA_VANTAGE_URL } from '../utils/url';
 import Header from './shared/header';
+import singleQuote from '../utils/url';
+import format from '../utils/formatters';
 
 export default class SingleQuote extends Component {
   constructor(props) {
@@ -12,35 +13,10 @@ export default class SingleQuote extends Component {
       isLoaded: false,
       error: false,
     };
-
-    this.getSingleQuote = this.getSingleQuote.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
 
-  format(json) {
-    let buffer = [];
-
-    Object.keys(json).forEach((key) => {
-      buffer.push(json[key]);
-    });
-
-    buffer.map((item) => {
-      Object.keys(item).map((key) => {
-        const newProp = key.split(' ')[1];
-        item[newProp] = item[key];
-        delete item[key];
-      });
-    });
-
-    return buffer[0];
-  }
-
-  fetchQuote(symbol) {
-    return `${ALPHA_VANTAGE_URL}${symbol}&apikey=${process.env.REACT_APP_API_KEY}`;
-  }
-
-  getSingleQuote(event) {
-    fetch(this.fetchQuote(this.state.value))
+  getSingleQuote = (event) => {
+    fetch(singleQuote(this.state.value))
       .then((response) => {
         return response.json();
       })
@@ -52,17 +28,21 @@ export default class SingleQuote extends Component {
           });
         else {
           this.setState({
-            ticker: { validValue: this.format(parsedJson) },
+            ticker: { validValue: format(parsedJson) },
             isLoaded: true,
             error: false,
           });
         }
       });
     event.preventDefault();
-  }
+  };
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({ value: event.target.value });
+  };
+
+  tickerExists() {
+    return this.state.isLoaded;
   }
 
   renderInvalidSelection() {
@@ -72,10 +52,6 @@ export default class SingleQuote extends Component {
         enter a valid ticker and try again
       </h5>
     );
-  }
-
-  tickerExists() {
-    return this.state.isLoaded;
   }
 
   renderTicker() {
