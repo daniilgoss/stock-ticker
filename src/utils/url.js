@@ -1,5 +1,5 @@
 const url = (quoteType, symbol) =>
-  `https://www.alphavantage.co/query?function=${quoteType}&symbol=${symbol}&apikey=${process.env.REACT_APP_API_KEY}`;
+  `https://www.alphavantage.co/query?function=${quoteType}&symbol=${symbol}&apikey=demo`;
 
 const singleQuote = (symbol) => {
   return url('GLOBAL_QUOTE', symbol);
