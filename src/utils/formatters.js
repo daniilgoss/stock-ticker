@@ -13,7 +13,7 @@ const format = (json) => {
     });
   });
 
-  return buffer[0];
+  return buffer;
 };
 
 export default format;

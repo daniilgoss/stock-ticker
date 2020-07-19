@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from './shared/header';
+// import Table from './shared/table';
 import singleQuote from '../utils/url';
 import format from '../utils/formatters';
 
@@ -58,7 +59,7 @@ export default class SingleQuote extends Component {
     return (
       <h6>
         {this.tickerExists()
-          ? JSON.stringify(Object.entries(this.state.ticker.validValue))
+          ? JSON.stringify(this.state.ticker.validValue)
           : 'No Ticker Selected'}
       </h6>
     );
@@ -82,6 +83,7 @@ export default class SingleQuote extends Component {
           </label>
         </form>
         {this.state.error ? this.renderInvalidSelection() : this.renderTicker()}
+        {/* <Table /> */}
       </div>
     );
   }
