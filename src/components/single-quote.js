@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import Header from './shared/header';
 import Table from './shared/table';
 import singleQuote from '../utils/url';
 import format from '../utils/formatters';
